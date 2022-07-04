@@ -19,6 +19,9 @@ function loadMainWeatherContainer() {
   date.setAttribute('id', 'date');
   weather.setAttribute('id', 'weather');
 
+  locationDetails.setAttribute('id', 'location-details');
+  dayDetails.setAttribute('id', 'day-details');
+
   container.appendChild(temp);
   container.appendChild(locationDetails);
   container.appendChild(weather);
