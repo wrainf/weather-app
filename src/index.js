@@ -42,10 +42,12 @@ function getDate(timeOffSet) {
 }
 
 function setTime(date) {
-  hourDiv.textContent = date.getHours();
-  minuteDiv.textContent = date.getMinutes();
-  dayDiv.textContent = weekday[date.getDay()];
-  dateDiv.textContent = date.getDate();
+  const hours = date.getHours().toString();
+  const minutes = date.getMinutes().toString();
+  hourDiv.textContent = (hours.length >= 2) ? `${hours}:` : `0${hours}`;
+  minuteDiv.textContent = (minutes.length >= 2) ? minutes : `0${minutes}`;
+  dayDiv.textContent = `${weekday[date.getDay()]}-`;
+  dateDiv.textContent = `${date.getDate()}-`;
   monthDiv.textContent = months[date.getMonth()];
 }
 
@@ -86,7 +88,8 @@ function populateSidebar(weatherData) {
 async function setData(location) {
   try {
     const weatherData = await getWeather(location);
-    temperatureDiv.textContent = `${weatherData.main.temp}°`;
+    const temp = Math.ceil(weatherData.main.temp);
+    temperatureDiv.textContent = `${temp}°`;
     cityDiv.textContent = weatherData.name;
     const date = getDate(weatherData.timezone);
     setTime(date);
