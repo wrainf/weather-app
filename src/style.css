@@ -1,0 +1,64 @@
+body{
+    margin: 0px;
+    height: 100vh;
+}
+
+#content,
+#main-weather,
+#sidebar{
+    display: flex;
+}
+
+#content{
+    height: 100vh;
+}
+
+#main{
+    padding: 150px;
+    display: flex;
+    width: 60vw;
+    align-items: flex-end;
+    
+}
+
+#main-weather{
+    gap: 32px;
+    height: 120px;
+    align-items: flex-end;
+}
+
+#sidebar{
+    width: 40vw;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#location-details{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#day-details,
+#day-details div{
+    display: flex;
+}
+#day-details{
+    gap: 16px;
+    font-size: 20px;
+
+}
+
+#weather{
+    font-size: 20px;
+}
+
+#temperature{
+    font-size: 120px;
+    height: 120px;
+}
+
+#city{
+    font-size: 60px;
+    text-align: start;
+}
