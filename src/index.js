@@ -24,7 +24,13 @@ const weather = document.querySelector('#weather');
 
 async function getWeather(location) {
   try {
-    const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=2a3e6417c89470aaa7587fa599ac7255`);
+    let response;
+    if (typeof location === 'string') {
+      response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=2a3e6417c89470aaa7587fa599ac7255`);
+    } else {
+      response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location[0]}&lon=${location[1]}&units=metric&appid=2a3e6417c89470aaa7587fa599ac7255`);
+    }
+
     const weatherData = await response.json();
     console.log(weatherData);
     return weatherData;
@@ -107,9 +113,19 @@ async function setData(location) {
     weather.textContent = weatherData.weather[0].main;
     populateSidebar(weatherData);
   } catch (error) {
-    alert('Invalid City! Reset to default..');
-    setData('London');
+    alert('Invalid City!');
   }
 }
 
-setData('London');
+function setPosition(position) {
+  setData([position.coords.latitude, position.coords.longitude]);
+}
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setPosition);
+  }
+  setData('Tokyo');
+}
+
+getLocation();
