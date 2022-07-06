@@ -1,7 +1,7 @@
 import loadPage from './loadPage';
 import './style.css';
 import loadMainWeatherContainer from './loadMainWeatherContainer';
-import boxDeatils from './boxDetails';
+import boxDetails from './boxDetails';
 
 document.body.appendChild(loadPage());
 const main = document.querySelector('#main');
@@ -15,6 +15,8 @@ const minuteDiv = document.querySelector('#minute');
 const dayDiv = document.querySelector('#day');
 const dateDiv = document.querySelector('#date');
 const monthDiv = document.querySelector('#month');
+const mainWeather = document.querySelector('#main-weather');
+const weatherImg = document.querySelector('#weather-icon');
 
 const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Octr', 'Nov', 'Dec'];
@@ -44,7 +46,7 @@ function getDate(timeOffSet) {
 function setTime(date) {
   const hours = date.getHours().toString();
   const minutes = date.getMinutes().toString();
-  hourDiv.textContent = (hours.length >= 2) ? `${hours}:` : `0${hours}`;
+  hourDiv.textContent = (hours.length >= 2) ? `${hours}:` : `0${hours}:`;
   minuteDiv.textContent = (minutes.length >= 2) ? minutes : `0${minutes}`;
   dayDiv.textContent = `${weekday[date.getDay()]}-`;
   dateDiv.textContent = `${date.getDate()}-`;
@@ -63,26 +65,32 @@ function createSearch() {
   searchBtn.setAttribute('id', 'search-btn');
   search.setAttribute('id', 'search-bar');
   search.setAttribute('placeholder', 'Enter city name');
-  searchBtn.textContent = 'Search';
   searchBtn.addEventListener('click', () => {
     const location = search.value;
     depopulateSidebar();
     setData(location);
+    main.removeChild(mainWeather);
+    main.appendChild(mainWeather);
   });
 
   searchContainer.appendChild(search);
   searchContainer.appendChild(searchBtn);
+  searchContainer.setAttribute('id', 'search-container');
   return searchContainer;
 }
 
 function populateSidebar(weatherData) {
   sidebar.appendChild(createSearch());
-  sidebar.appendChild(boxDeatils('Feels Like', `${weatherData.main.feels_like}°`));
-  sidebar.appendChild(boxDeatils('High', `${weatherData.main.temp_max}°`));
-  sidebar.appendChild(boxDeatils('Low', `${weatherData.main.temp_min}°`));
-  sidebar.appendChild(boxDeatils('Humidity', `${weatherData.main.humidity}%`));
-  sidebar.appendChild(boxDeatils('Pressure', `${weatherData.main.humidity}hPa`));
-  sidebar.appendChild(boxDeatils('Wind', `${weatherData.wind.speed}m/s`));
+  const weatherTitle = document.createElement('div');
+  weatherTitle.textContent = 'Weather Details';
+  weatherTitle.setAttribute('id', 'weather-title');
+  sidebar.appendChild(weatherTitle);
+  sidebar.appendChild(boxDetails('Feels Like', `${Math.ceil(weatherData.main.feels_like)}°`));
+  sidebar.appendChild(boxDetails('High', `${Math.ceil(weatherData.main.temp_max)}°`));
+  sidebar.appendChild(boxDetails('Low', `${Math.ceil(weatherData.main.temp_min)}°`));
+  sidebar.appendChild(boxDetails('Humidity', `${weatherData.main.humidity}%`));
+  sidebar.appendChild(boxDetails('Pressure', `${weatherData.main.humidity}hPa`));
+  sidebar.appendChild(boxDetails('Wind', `${weatherData.wind.speed}m/s`));
 }
 
 async function setData(location) {
@@ -90,6 +98,8 @@ async function setData(location) {
     const weatherData = await getWeather(location);
     const temp = Math.ceil(weatherData.main.temp);
     temperatureDiv.textContent = `${temp}°`;
+    const imgID = weatherData.weather[0].icon;
+    weatherImg.src = `https://openweathermap.org/img/wn/${imgID}@2x.png`;
     cityDiv.textContent = weatherData.name;
     const date = getDate(weatherData.timezone);
     setTime(date);
