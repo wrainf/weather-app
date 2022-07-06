@@ -52,8 +52,8 @@ function getDate(timeOffSet) {
 function setTime(date) {
   const hours = date.getHours().toString();
   const minutes = date.getMinutes().toString();
-  hourDiv.textContent = (hours.length >= 2) ? `${hours}:` : `0${hours}:`;
-  minuteDiv.textContent = (minutes.length >= 2) ? minutes : `0${minutes}`;
+  hourDiv.textContent = (hours.length >= 2) ? `${hours}` : `0${hours}`;
+  minuteDiv.textContent = (minutes.length >= 2) ? `:${minutes}` : `:0${minutes}`;
   dayDiv.textContent = `${weekday[date.getDay()]}-`;
   dateDiv.textContent = `${date.getDate()}-`;
   monthDiv.textContent = months[date.getMonth()];
@@ -100,6 +100,17 @@ function populateSidebar(weatherData) {
   }
 }
 
+function setBackground(sunrise, sunset) {
+  console.log(hourDiv.textContent);
+  if (+hourDiv.textContent > +sunrise && +hourDiv.textContent < +sunset) {
+    document.body.classList.add('morning');
+    document.body.classList.remove('night');
+  } else {
+    document.body.classList.add('night');
+    document.body.classList.remove('morning');
+  }
+}
+
 async function setData(location) {
   try {
     const weatherData = await getWeather(location);
@@ -112,6 +123,24 @@ async function setData(location) {
     setTime(date);
     weather.textContent = weatherData.weather[0].main;
     populateSidebar(weatherData);
+
+    // changing bg
+    const curDate = new Date();
+    // in hours
+    const localOffset = -curDate.getTimezoneOffset() / 60;
+    const locationOffset = weatherData.timezone / 3600;
+    const hourDif = localOffset - locationOffset;
+
+    const sunrise = new Date(weatherData.sys.sunrise * 1000 - hourDif * 3600000);
+    const sunset = new Date(weatherData.sys.sunset * 1000 - hourDif * 3600000);
+
+    const sunriseHour = sunrise.getHours();
+    const sunsetHour = sunset.getHours();
+
+    setBackground(sunriseHour, sunsetHour);
+    console.log(sunrise);
+    console.log(sunsetHour);
+    console.log(sunriseHour);
   } catch (error) {
     alert('Invalid City!');
   }
