@@ -7,6 +7,8 @@ function loadMainWeatherContainer() {
   const time = document.createElement('div');
   const fullDate = document.createElement('div');
   const weather = document.createElement('div');
+  const weatherContainer = document.createElement('div');
+  const weatherIcon = document.createElement('img');
 
   dayDetails.appendChild(time);
   dayDetails.appendChild(fullDate);
@@ -40,9 +42,14 @@ function loadMainWeatherContainer() {
   fullDate.appendChild(date);
   fullDate.appendChild(month);
 
+  weatherIcon.setAttribute('id', 'weather-icon');
+  weatherContainer.appendChild(weatherIcon);
+  weatherContainer.appendChild(weather);
+  weatherContainer.setAttribute('id', 'weather-container');
+
   container.appendChild(temp);
   container.appendChild(locationDetails);
-  container.appendChild(weather);
+  container.appendChild(weatherContainer);
   container.setAttribute('id', 'main-weather');
   return container;
 }
