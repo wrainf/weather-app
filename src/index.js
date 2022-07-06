@@ -26,9 +26,9 @@ async function getWeather(location) {
   try {
     let response;
     if (typeof location === 'string') {
-      response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=2a3e6417c89470aaa7587fa599ac7255`);
+      response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=2a3e6417c89470aaa7587fa599ac7255`);
     } else {
-      response = await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${location[0]}&lon=${location[1]}&units=metric&appid=2a3e6417c89470aaa7587fa599ac7255`);
+      response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location[0]}&lon=${location[1]}&units=metric&appid=2a3e6417c89470aaa7587fa599ac7255`);
     }
 
     const weatherData = await response.json();
