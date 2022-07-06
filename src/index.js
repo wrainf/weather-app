@@ -1,7 +1,7 @@
 import loadPage from './loadPage';
 import './style.css';
 import loadMainWeatherContainer from './loadMainWeatherContainer';
-import boxDetails from './boxDetails';
+import createSidebar from './createSidebar';
 
 document.body.appendChild(loadPage());
 const main = document.querySelector('#main');
@@ -53,9 +53,13 @@ function setTime(date) {
   monthDiv.textContent = months[date.getMonth()];
 }
 
-function depopulateSidebar() {
-  sidebar.innerHTML = '';
-}
+sidebar.appendChild(createSearch());
+const weatherTitle = document.createElement('div');
+weatherTitle.textContent = 'Weather Details';
+weatherTitle.setAttribute('id', 'weather-title');
+sidebar.appendChild(weatherTitle);
+createSidebar();
+const sidebarValues = document.querySelector('#sidebar-container');
 
 function createSearch() {
   const searchContainer = document.createElement('div');
@@ -67,10 +71,11 @@ function createSearch() {
   search.setAttribute('placeholder', 'Enter city name');
   searchBtn.addEventListener('click', () => {
     const location = search.value;
-    depopulateSidebar();
     setData(location);
     main.removeChild(mainWeather);
     main.appendChild(mainWeather);
+    sidebar.removeChild(sidebarValues);
+    sidebar.appendChild(sidebarValues);
   });
 
   searchContainer.appendChild(search);
@@ -80,17 +85,13 @@ function createSearch() {
 }
 
 function populateSidebar(weatherData) {
-  sidebar.appendChild(createSearch());
-  const weatherTitle = document.createElement('div');
-  weatherTitle.textContent = 'Weather Details';
-  weatherTitle.setAttribute('id', 'weather-title');
-  sidebar.appendChild(weatherTitle);
-  sidebar.appendChild(boxDetails('Feels Like', `${Math.ceil(weatherData.main.feels_like)}°`));
-  sidebar.appendChild(boxDetails('High', `${Math.ceil(weatherData.main.temp_max)}°`));
-  sidebar.appendChild(boxDetails('Low', `${Math.ceil(weatherData.main.temp_min)}°`));
-  sidebar.appendChild(boxDetails('Humidity', `${weatherData.main.humidity}%`));
-  sidebar.appendChild(boxDetails('Pressure', `${weatherData.main.humidity}hPa`));
-  sidebar.appendChild(boxDetails('Wind', `${weatherData.wind.speed}m/s`));
+  const boxValues = document.querySelectorAll('#value');
+  const data = [`${Math.ceil(weatherData.main.feels_like)}°`, `${Math.ceil(weatherData.main.temp_max)}°`, `${Math.ceil(weatherData.main.temp_min)}°`,
+    `${weatherData.main.humidity}%`, `${weatherData.main.humidity}hPa`, `${weatherData.wind.speed}m/s`];
+  for (let index = 0; index < data.length; index += 1) {
+    const value = data[index];
+    boxValues[index].textContent = value;
+  }
 }
 
 async function setData(location) {
