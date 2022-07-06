@@ -1,1 +1,2 @@
 # weather-app
+This is definetly the biggest project I have worked on. I was definetly very excited to start this project since it dealt with using APIs. Which, was one of the things in web development that I really wanted to learn and now finally I have. Besides that, it is my first project where I also incorparated eslint which help me maintain JS standard writing. I also learnt about async and await functions as well as learning about promises, and try & catch. Definetly my most proud project yet.
