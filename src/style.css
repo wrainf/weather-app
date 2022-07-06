@@ -16,16 +16,19 @@
 body{
     margin: 0px;
     height: 100vh;
-    background-size: cover;
-    background-position: center;
+    
 }
 
 .morning{
     background: url(./morning.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .night{
     background: url(./night.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #content,
